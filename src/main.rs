@@ -9,7 +9,7 @@ use monolith::html::{html_to_dom, stringify_document, walk_and_embed_assets};
 use monolith::http::retrieve_asset;
 use monolith::utils::is_valid_url;
 use reqwest::blocking::Client;
-use reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
+use reqwest::header::{HeaderMap, HeaderValue, USER_AGENT, COOKIE};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, Error, Write};
@@ -63,6 +63,10 @@ fn main() {
     header_map.insert(
         USER_AGENT,
         HeaderValue::from_str(&app_args.user_agent).expect("Invalid User-Agent header specified"),
+    );
+    header_map.insert(
+        COOKIE,
+        HeaderValue::from_str(&app_args.cookie).unwrap(),
     );
 
     let client = Client::builder()

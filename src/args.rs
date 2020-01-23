@@ -12,10 +12,14 @@ pub struct AppArgs {
     pub output: String,
     pub silent: bool,
     pub user_agent: String,
+    pub cookie: String,
 }
 
 const DEFAULT_USER_AGENT: &str =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0";
+
+const DEFAULT_COOKIE: &str =
+    "";
 
 impl AppArgs {
     pub fn get() -> AppArgs {
@@ -40,6 +44,7 @@ impl AppArgs {
             .args_from_usage("-o, --output=[document.html] 'Write output to <file>'")
             .args_from_usage("-s, --silent 'Suppress verbosity'")
             .args_from_usage("-u, --user-agent=[Iceweasel] 'Custom User-Agent string'")
+            .args_from_usage("-ck, --cookie=[Iceweasel] 'Custom Cookie string'")
             // .args_from_usage("-v, --include-video 'Embed video sources'")
             .get_matches();
         let mut app_args = AppArgs::default();
@@ -59,6 +64,10 @@ impl AppArgs {
         app_args.user_agent = app
             .value_of("user-agent")
             .unwrap_or(DEFAULT_USER_AGENT)
+            .to_string();
+        app_args.user_agent = app
+            .value_of("cookie")
+            .unwrap_or(DEFAULT_COOKIE)
             .to_string();
         app_args
     }
